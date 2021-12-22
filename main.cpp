@@ -75,11 +75,11 @@ std::string remove_punctuation(std::string title)
 		cout << "标题中有标点" << title << endl;
 		cout << what << endl;
 		boost::split_regex(v, title, regex_expr);
-		for (auto it = v.begin(); it != v.end(); it++)
+		for (const auto& item : v)
 		{
-			if (*it != "" && *it != " ")
+			if (item != "" && item != " ")
 			{
-				new_title += *it;
+				new_title += item;
 			}
 		}
 		return new_title;

@@ -23,10 +23,13 @@ set(OpenCV_LIBRARY_DIR D:/opencv330/opencv/clion64withCon/lib)
 #   target_link_libraries(book_optimize ${Boost_LIBRARIES})
 #endif()
 
-add_executable(book_optimize main.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+add_executable(book_optimize main.cpp remove_op.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIR}
-                                                  ${OpenCV_INCLUDE_DIR})
+                                                  ${OpenCV_INCLUDE_DIR}
+                                                  ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
         ${Boost_LIBRARY_DIR}/libboost_regex-mgw49-mt-x64-1_69.a
