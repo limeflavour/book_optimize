@@ -25,7 +25,7 @@ set(OpenCV_LIBRARY_DIR D:/opencv330/opencv/clion64withCon/lib)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-add_executable(book_optimize main.cpp remove_op.cpp)
+add_executable(book_optimize main.cpp remove_op.cpp ${PROJECT_SOURCE_DIR}/include/testh.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIR}
                                                   ${OpenCV_INCLUDE_DIR}
