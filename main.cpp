@@ -17,20 +17,20 @@ std::string UTF8_To_string(const std::string& str);
 std::string UTF8_To_string(const std::string& str)
 {
 	int nwLen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
-	wchar_t* pwBuf = new wchar_t[nwLen + 1];    //一定要加1，不然会出现尾巴
-	memset(pwBuf, 0, nwLen * 2 + 2);
-	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), pwBuf, nwLen);
-	int nLen = WideCharToMultiByte(CP_ACP, 0, pwBuf, -1, NULL, NULL, NULL, NULL);
-	char* pBuf = new char[nLen + 1];
-	memset(pBuf, 0, nLen + 1);
-	WideCharToMultiByte(CP_ACP, 0, pwBuf, nwLen, pBuf, nLen, NULL, NULL);
+	std::shared_ptr<wchar_t> pwBuf(new wchar_t[nwLen + 1]);    //一定要加1，不然会出现尾巴
+	memset(pwBuf.get(), 0, nwLen * 2 + 2);
+	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), pwBuf.get(), nwLen);
+	int nLen = WideCharToMultiByte(CP_ACP, 0, pwBuf.get(), -1, NULL, NULL, NULL, NULL);
+	std::unique_ptr<char>pBuf(new char[nLen + 1]);
+	memset(pBuf.get(), 0, nLen + 1);
+	WideCharToMultiByte(CP_ACP, 0, pwBuf.get(), nwLen, pBuf.get(), nLen, NULL, NULL);
 
-	std::string strRet = pBuf;
+	std::string strRet = pBuf.get();
 
-	delete[]pBuf;
-	delete[]pwBuf;
-	pBuf = NULL;
-	pwBuf = NULL;
+	//delete[]pBuf;
+	//delete[]pwBuf;
+	//pBuf = nullptr;
+	//pwBuf = nullptr;
 
 	return strRet;
 }
@@ -39,25 +39,25 @@ std::string string_To_UTF8(const std::string& str)
 {
 	int nwLen = ::MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
 
-	wchar_t* pwBuf = new wchar_t[nwLen + 1];//一定要加1，不然会出现尾巴
-	ZeroMemory(pwBuf, nwLen * 2 + 2);
+	std::unique_ptr<wchar_t> pwBuf(new wchar_t[nwLen + 1]);//一定要加1，不然会出现尾巴
+	ZeroMemory(pwBuf.get(), nwLen * 2 + 2);
 
-	::MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), pwBuf, nwLen);
+	::MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), pwBuf.get(), nwLen);
 
-	int nLen = ::WideCharToMultiByte(CP_UTF8, 0, pwBuf, -1, NULL, NULL, NULL, NULL);
+	int nLen = ::WideCharToMultiByte(CP_UTF8, 0, pwBuf.get(), -1, NULL, NULL, NULL, NULL);
 
-	char* pBuf = new char[nLen + 1];
-	ZeroMemory(pBuf, nLen + 1);
+	std::unique_ptr<char> pBuf(new char[nLen + 1]);
+	ZeroMemory(pBuf.get(), nLen + 1);
 
-	::WideCharToMultiByte(CP_UTF8, 0, pwBuf, nwLen, pBuf, nLen, NULL, NULL);
+	::WideCharToMultiByte(CP_UTF8, 0, pwBuf.get(), nwLen, pBuf.get(), nLen, NULL, NULL);
 
-	std::string retStr(pBuf);
+	std::string retStr(pBuf.get());
 
-	delete[]pwBuf;
-	delete[]pBuf;
+	//delete[]pwBuf;
+	//delete[]pBuf;
 
-	pwBuf = NULL;
-	pBuf = NULL;
+	//pwBuf = nullptr;
+	//pBuf = nullptr;
 
 	return retStr;
 }
@@ -97,6 +97,11 @@ int main()
 	string result = remove_punctuation(test);
 	cout << result << endl;
 	cout << CV_VERSION << endl;
-	system("pause");
+
+	cv::Mat img1 = cv::imread("D:\\test\\0679.jpg");
+	cv::resize(img1, img1, cv::Size(img1.cols * 0.3, img1.rows * 0.3));
+	cv::imshow("text", img1);
+
+	cv::waitKey(0);
     return 0;
 }

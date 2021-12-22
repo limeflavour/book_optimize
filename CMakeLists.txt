@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 project(book_optimize)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 set(Boost_LIBRARY_DIR D:/mingwBoost169jingtai/lib)
 set(Boost_INCLUDE_DIR D:/boost_1_69_0/boost_1_69_0)
@@ -24,8 +24,14 @@ set(OpenCV_LIBRARY_DIR D:/opencv330/opencv/clion64withCon/lib)
 #endif()
 
 add_executable(book_optimize main.cpp)
-target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIR} ${OpenCV_INCLUDE_DIR})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIR}
+                                                  ${OpenCV_INCLUDE_DIR})
+
 target_link_libraries(${PROJECT_NAME} PUBLIC
         ${Boost_LIBRARY_DIR}/libboost_regex-mgw49-mt-x64-1_69.a
-        ${OpenCV_LIBRARY_DIR}/libopencv_core330.dll.a)
+        ${OpenCV_LIBRARY_DIR}/libopencv_core330.dll.a
+        ${OpenCV_LIBRARY_DIR}/libopencv_highgui330.dll.a
+        ${OpenCV_LIBRARY_DIR}/libopencv_imgproc330.dll.a
+        ${OpenCV_LIBRARY_DIR}/libopencv_imgcodecs330.dll.a)
 
